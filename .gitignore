@@ -1,0 +1,3 @@
+build/
+minrm.egg*
+*__pycache__/
