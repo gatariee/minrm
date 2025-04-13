@@ -95,6 +95,7 @@ def main():
     parser.add_argument( "-u", "--user", required = True , help = "username (i.e. Administrator)" )
     parser.add_argument( "-p", "--password", required = False , help = "cleartext password, uses negotiate auth" )
     parser.add_argument( "-H", "--hash", required = False , help = "NTLM hash, uses ntlm auth" )
+    parser.add_argument( "-S", "--ssl", required = False, help = "Enable SSL" , action='store_true' )
 
     args = parser.parse_args()
     if args.password is None and args.hash is None:
@@ -104,13 +105,14 @@ def main():
     CREDENTIAL = f"{args.password}" if args.password else f"{'f'*32}:{args.hash}"
     HOST = args.ip
     AUTH = "negotiate" if args.password else "ntlm"
+    SSL  = True if args.ssl else False
 
     PRINT( "+", f"Creating WSMan object for {USER}@{HOST}", debug = True )
     wsman = WSMan( server = HOST,
                    username = USER,
                    password = CREDENTIAL,
                    auth = AUTH,
-                   ssl = False,
+                   ssl = SSL,
                    cert_validation = False )
     PRINT( "*", f"Verifying connection to {USER}@{HOST}", debug = True )
 
